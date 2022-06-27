@@ -2,13 +2,13 @@ import { useState } from 'react'
 import './App.css'
 
 export default function App() {
-  
   const [todo, setTodo] = useState([])
   const [post, setPost] = useState({ text: '', status: false })
-  const [currentPage,setCurrentPage] = useState(1)
+  const [currentPage, setCurrentPage] = useState(1)
   const [todoNo] = useState(5)
 
-  function addTodo() {
+  function addTodo(e) {
+    e.preventDefault()
     const newTodo = [{ text: post, status: false }, ...todo]
     setTodo(newTodo)
     setPost({ text: '' })
@@ -30,9 +30,9 @@ export default function App() {
     totalPages.push(i)
   }
   //Get current posts
-  const indexOfLastPost = currentPage*todoNo;
-  const indexOfFirstPost = indexOfLastPost - todoNo;
-  const currentTodos = todo.slice(indexOfFirstPost,indexOfLastPost)
+  const indexOfLastPost = currentPage * todoNo
+  const indexOfFirstPost = indexOfLastPost - todoNo
+  const currentTodos = todo.slice(indexOfFirstPost, indexOfLastPost)
 
   return (
     <div className='App'>
@@ -42,7 +42,7 @@ export default function App() {
           value={post.text}
           placeholder='add your task here'
         />
-        <button onClick={() => addTodo()}>Add</button>
+        <button onClick={post.text === '' ? '' : (e) => addTodo(e)}>Add</button>
       </div>
       {currentTodos &&
         currentTodos.map((tod, i) => {
@@ -60,9 +60,13 @@ export default function App() {
         })}
       <div className='pagntn-container'>
         {totalPages.map((page) => {
-          return <a onClick={() =>setCurrentPage(page)}className='pagntn'>{page}</a>
+          return (
+            <a onClick={() => setCurrentPage(page)} className='pagntn'>
+              {page}
+            </a>
+          )
         })}
-      </div>  
+      </div>
     </div>
   )
 }
