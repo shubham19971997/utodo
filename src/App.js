@@ -50,7 +50,7 @@ export default function App() {
             if (time / year > 0.99) {
               return Math.round(time / year > 0.99) + 'y'
             }
-            return Math.round(time / month) + 'month'
+            return Math.round(time / month) + 'mon'
           }
           return Math.round(time / days) + 'd'
         }
@@ -63,11 +63,12 @@ export default function App() {
 
   return (
     <div className='App'>
-      <div>
+      <div className='input-box'>
         <input
+          className='input'
           onChange={(e) => setPost(e.target.value)}
           value={post.text}
-          placeholder='add your task here'
+          placeholder='Add your task here'
         />
         <button onClick={post.text === '' ? '' : (e) => addTodo(e)}>Add</button>
       </div>
@@ -75,8 +76,14 @@ export default function App() {
         currentTodos.map((tod, i) => {
           return (
             <div className={`card `} key={i}>
-              <div className='textarea '>
-                <p>{tod.text}</p>
+              <div className='textarea'>
+                <div
+                  className={`text-box-trp ${
+                    tod.status ? 'text-box-trp-cmp' : ''
+                  }`}
+                >
+                  <p>{tod.text}</p>
+                </div>
               </div>
               <div className={`dashboard ${tod.status ? 'compcard' : ''}`}>
                 <button className='btn-del' onClick={() => deleteTodo(i)}>
@@ -85,7 +92,10 @@ export default function App() {
                 <button className='btn-com' onClick={() => changeStatus(i)}>
                   {tod.status ? 'Completed' : 'Incomplete'}
                 </button>
-                <p>{getTime(tod.Date)} ago</p>
+                <p>
+                  {getTime(tod.Date)}
+                  <span className='ago'> ago</span>
+                </p>
               </div>
             </div>
           )

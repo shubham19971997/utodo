@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  margin-top: 40px;
 }
 .card{
   height: 100%;
@@ -12,6 +13,31 @@
   text-align: center;
   transition: background-color 1s ease-out;
 }
+.input-box{
+  position: static;
+}
+.input-box>input{
+  position: static;
+  height: 30px;
+  font-size: 15px;
+  padding-right: 5px;
+  border-radius: 3px;
+  border: 1px solid grey;
+  transition: .3s ease-out;
+}
+
+.input:focus{
+  position: static;
+  outline: none;
+  border: 2px solid grey;
+  transition: .1s ease-out;
+}
+
+.input-box>button{
+  margin-left: 10px;
+  height: 35px;
+  width: 45px;
+}
 
 .textarea{
   border-radius: 5px; 
@@ -23,7 +49,15 @@
   padding: 10px;
   font-weight: 500;
 }
-
+.text-box-trp{
+ width: 100%;
+  background-color: rgba(128, 128, 128, 0.542);
+  border-radius: 3px;
+}
+.text-box-trp-cmp{
+  background-color: rgba(14, 132, 14, 0.46);
+  transition: .3s linear;
+}
 .pagntn{
   border: 2px solid rgb(90, 90, 94);
   margin: 5px;
@@ -52,10 +86,12 @@
 .dashboard>button{
   margin: 5px;
   border-radius: 3px;
-  border: 1px solid rgb(63, 63, 63);
+  border: 1px solid rgb(101, 101, 101);
+  font-size: 12px;
   font-weight: 550;
   color: rgb(60, 39, 39);
   transition: .3s ease-out;
+  background-color: whitesmoke;
 }
 .btn-del:hover{
   background-color: rgba(86, 58, 58, 0.527);
@@ -71,4 +107,13 @@
   background-color: rgb(43, 133, 43);
   transition: background-color 1s ease-out;
   z-index: 5;
+}
+.dashboard>p{
+  color: whitesmoke;
+  font-size: 12px;
+  margin-left: 100px;
+  font-weight: 600;
+}
+.ago{
+  font-size: 9px;
 }
