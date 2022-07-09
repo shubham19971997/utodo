@@ -1,12 +1,12 @@
 import { useState } from 'react'
 import './App.css'
+import { FiEdit3 } from 'react-icons/fi'
 
 export default function App() {
   const [todo, setTodo] = useState([])
   const [post, setPost] = useState({ text: '', status: false, Date: {} })
   const [currentPage, setCurrentPage] = useState(1)
   const [todoNo] = useState(3)
-  console.log(todo)
   function addTodo(e) {
     e.preventDefault()
     const newTodo = [{ text: post, status: false, Date: new Date() }, ...todo]
@@ -14,6 +14,7 @@ export default function App() {
     setPost({ text: '' })
   }
   function deleteTodo(i) {
+    console.log(i)
     const newTodo = [...todo]
     newTodo.splice(i, 1)
     setTodo(newTodo)
@@ -60,7 +61,7 @@ export default function App() {
     }
     return time
   }
-
+  // console.log(totalPages)
   return (
     <div className='App'>
       <div className='input-box'>
@@ -83,13 +84,37 @@ export default function App() {
                   }`}
                 >
                   <p>{tod.text}</p>
+                  <FiEdit3
+                    size={12}
+                    color='rgb(45, 40, 40)'
+                    style={{
+                      position: 'absolute',
+                      right: '7px',
+                      bottom: '3px',
+                      color: 'black',
+                    }}
+                  />
                 </div>
               </div>
               <div className={`dashboard ${tod.status ? 'compcard' : ''}`}>
-                <button className='btn-del' onClick={() => deleteTodo(i)}>
+                <button
+                  className='btn-del'
+                  onClick={() =>
+                    deleteTodo(
+                      currentPage > 1 ? i + (totalPages.length - 1) * 3 : i
+                    )
+                  }
+                >
                   Delete
                 </button>
-                <button className='btn-com' onClick={() => changeStatus(i)}>
+                <button
+                  className='btn-com'
+                  onClick={() =>
+                    changeStatus(
+                      currentPage > 1 ? i + (totalPages.length - 1) * 3 : i
+                    )
+                  }
+                >
                   {tod.status ? 'Completed' : 'Incomplete'}
                 </button>
                 <p>

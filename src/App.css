@@ -53,7 +53,9 @@
  width: 100%;
   background-color: rgba(128, 128, 128, 0.542);
   border-radius: 3px;
+  position: relative;
 }
+
 .text-box-trp-cmp{
   background-color: rgba(14, 132, 14, 0.46);
   transition: .3s linear;
