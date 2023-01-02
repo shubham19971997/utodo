@@ -1,6 +1,8 @@
 import { useState } from 'react'
 import './App.css'
 import { FiEdit3 } from 'react-icons/fi'
+import Draggable from 'react-draggable'
+import Pagntn from './pagntn'
 
 export default function App() {
   const [todo, setTodo] = useState([])
@@ -62,6 +64,15 @@ export default function App() {
     return time
   }
   // console.log(totalPages)
+  const pageSetter = (page) => {
+    setCurrentPage(page)
+  }
+  const handleKeyDown = (e) => {
+    console.log("hello from outside function")
+    if (e.keyCode === 13 && e.target.value) {
+      addTodo(e);
+    }
+  }
   return (
     <div className='App'>
       <div className='input-box'>
@@ -70,70 +81,65 @@ export default function App() {
           onChange={(e) => setPost(e.target.value)}
           value={post.text}
           placeholder='Add your task here'
+          onKeyDown={handleKeyDown}
         />
         <button onClick={post.text === '' ? '' : (e) => addTodo(e)}>Add</button>
       </div>
       {currentTodos &&
         currentTodos.map((tod, i) => {
           return (
-            <div className={`card `} key={i}>
-              <div className='textarea'>
-                <div
-                  className={`text-box-trp ${
-                    tod.status ? 'text-box-trp-cmp' : ''
-                  }`}
-                >
-                  <p>{tod.text}</p>
-                  <FiEdit3
-                    size={12}
-                    color='rgb(45, 40, 40)'
-                    style={{
-                      position: 'absolute',
-                      right: '7px',
-                      bottom: '3px',
-                      color: 'black',
-                    }}
-                  />
+            <Draggable>
+              <div className={`card `} key={i}>
+                <div className='textarea'>
+                  <div
+                    className={`text-box-trp ${
+                      tod.status ? 'text-box-trp-cmp' : ''
+                    }`}
+                  >
+                    <p>{tod.text}</p>
+                    <FiEdit3
+                      size={12}
+                      color='rgb(45, 40, 40)'
+                      style={{
+                        position: 'absolute',
+                        right: '7px',
+                        bottom: '3px',
+                        color: 'black',
+                      }}
+                    />
+                  </div>
+                </div>
+                <div className={`dashboard ${tod.status ? 'compcard' : ''}`}>
+                  <button
+                    className='btn-del'
+                    onClick={() =>
+                      deleteTodo(
+                        currentPage > 1 ? i + (totalPages.length - 1) * 3 : i
+                      )
+                    }
+                  >
+                    Delete
+                  </button>
+                  <button
+                    className='btn-com'
+                    onClick={() =>
+                      changeStatus(
+                        currentPage > 1 ? i + (totalPages.length - 1) * 3 : i
+                      )
+                    }
+                  >
+                    {tod.status ? 'Completed' : 'Incomplete'}
+                  </button>
+                  <p>
+                    {getTime(tod.Date)}
+                    <span className='ago'> ago</span>
+                  </p>
                 </div>
               </div>
-              <div className={`dashboard ${tod.status ? 'compcard' : ''}`}>
-                <button
-                  className='btn-del'
-                  onClick={() =>
-                    deleteTodo(
-                      currentPage > 1 ? i + (totalPages.length - 1) * 3 : i
-                    )
-                  }
-                >
-                  Delete
-                </button>
-                <button
-                  className='btn-com'
-                  onClick={() =>
-                    changeStatus(
-                      currentPage > 1 ? i + (totalPages.length - 1) * 3 : i
-                    )
-                  }
-                >
-                  {tod.status ? 'Completed' : 'Incomplete'}
-                </button>
-                <p>
-                  {getTime(tod.Date)}
-                  <span className='ago'> ago</span>
-                </p>
-              </div>
-            </div>
+            </Draggable>
           )
         })}
-      <div className='pagntn-container'>
-        {totalPages.map((page) => {
-          return (
-            <a onClick={() => setCurrentPage(page)} className='pagntn'>
-              {page}
-            </a>
-          )
-        })}
-      </div>
+      <Pagntn totalPages={totalPages} setCurrentPage={pageSetter} />
     </div>
   )
 }
