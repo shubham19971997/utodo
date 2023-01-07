@@ -1,7 +1,6 @@
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import './App.css'
 import { FiEdit3 } from 'react-icons/fi'
-import Draggable from 'react-draggable'
 import Pagntn from './pagntn'
 
 export default function App() {
@@ -16,12 +15,15 @@ export default function App() {
     setPost({ text: '' })
   }
   function deleteTodo(i) {
-    console.log(i)
     const newTodo = [...todo]
     newTodo.splice(i, 1)
     setTodo(newTodo)
   }
   function changeStatus(i) {
+    console.log('todo no:- ' + i)
+    console.log('current page:- ' + currentPage)
+    console.log(totalPages.slice(-1))
+    console.log(todo)
     const newTodo = [...todo]
     newTodo[i].status = true
     setTodo(newTodo)
@@ -63,80 +65,75 @@ export default function App() {
     }
     return time
   }
-  // console.log(totalPages)
   const pageSetter = (page) => {
     setCurrentPage(page)
   }
   const handleKeyDown = (e) => {
-    console.log("hello from outside function")
+    console.log('hello from outside function')
     if (e.keyCode === 13 && e.target.value) {
-      addTodo(e);
+      addTodo(e)
     }
   }
   return (
     <div className='App'>
-      <div className='input-box'>
+      <form
+        className='input-box'
+        onSubmit={post.text === '' ? '' : (e) => addTodo(e)}
+      >
         <input
           className='input'
           onChange={(e) => setPost(e.target.value)}
           value={post.text}
           placeholder='Add your task here'
           onKeyDown={handleKeyDown}
+          autoFocus
         />
-        <button onClick={post.text === '' ? '' : (e) => addTodo(e)}>Add</button>
-      </div>
+        <button type='submit' value='Submit'>
+          Add
+        </button>
+      </form>
       {currentTodos &&
         currentTodos.map((tod, i) => {
           return (
-            <Draggable>
-              <div className={`card `} key={i}>
-                <div className='textarea'>
-                  <div
-                    className={`text-box-trp ${
-                      tod.status ? 'text-box-trp-cmp' : ''
-                    }`}
-                  >
-                    <p>{tod.text}</p>
-                    <FiEdit3
-                      size={12}
-                      color='rgb(45, 40, 40)'
-                      style={{
-                        position: 'absolute',
-                        right: '7px',
-                        bottom: '3px',
-                        color: 'black',
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className={`dashboard ${tod.status ? 'compcard' : ''}`}>
-                  <button
-                    className='btn-del'
-                    onClick={() =>
-                      deleteTodo(
-                        currentPage > 1 ? i + (totalPages.length - 1) * 3 : i
-                      )
-                    }
-                  >
-                    Delete
-                  </button>
-                  <button
-                    className='btn-com'
-                    onClick={() =>
-                      changeStatus(
-                        currentPage > 1 ? i + (totalPages.length - 1) * 3 : i
-                      )
-                    }
-                  >
-                    {tod.status ? 'Completed' : 'Incomplete'}
-                  </button>
-                  <p>
-                    {getTime(tod.Date)}
-                    <span className='ago'> ago</span>
-                  </p>
+            <div className={`card `} key={i}>
+              <div className='textarea'>
+                <div
+                  className={`text-box-trp ${
+                    tod.status ? 'text-box-trp-cmp' : ''
+                  }`}
+                >
+                  <p>{tod.text}</p>
+                  <FiEdit3
+                    size={12}
+                    color='rgb(45, 40, 40)'
+                    style={{
+                      position: 'absolute',
+                      right: '7px',
+                      bottom: '3px',
+                      color: 'black',
+                    }}
+                  />
                 </div>
               </div>
-            </Draggable>
+              <div className={`dashboard ${tod.status ? 'compcard' : ''}`}>
+                <button
+                  className='btn-del'
+                  onClick={() => deleteTodo(3 * (currentPage - 1) + i)}
+                >
+                  Delete
+                </button>
+                <button
+                  className='btn-com'
+                  onClick={() => changeStatus(3 * (currentPage - 1) + i)}
+                >
+                  {tod.status ? 'Completed' : 'Incomplete'}
+                </button>
+                <p>
+                  {getTime(tod.Date)}
+                  <span className='ago'> ago</span>
+                </p>
+              </div>
+            </div>
           )
         })}
       <Pagntn totalPages={totalPages} setCurrentPage={pageSetter} />
